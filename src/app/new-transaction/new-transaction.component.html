@@ -1,17 +1,42 @@
 <h2>New Transaction</h2>
 
-<form #form='ngForm' [formGroup]="options">
-  <mat-radio-group aria-label="Select an option">
+<form [formGroup]='newTransactionForm'>
+  <mat-radio-group aria-label="Select an option" formControlName='type'>
     <mat-radio-button value="1">Income</mat-radio-button>
     <mat-radio-button value="2">Expense</mat-radio-button>
+    <mat-radio-button value="3">Savings</mat-radio-button>
   </mat-radio-group>
-
+  <br>
   <mat-form-field appearance="fill" color="primary">
     <mat-label>Who</mat-label>
-    <mat-select [formControl]="whoControl">
+    <mat-select formControlName='who'>
       <mat-option value="augusto">Augusto</mat-option>
       <mat-option value="camila">Camila</mat-option>
       <mat-option value="both">Both</mat-option>
     </mat-select>
   </mat-form-field>
+  <br>
+  <mat-form-field appearance='fill' color='primary'>
+    <mat-label>Category</mat-label>
+
+    <!-- TODO: Get list of categories from file/DB, and allow new ones -->
+    <mat-select formControlName='category'>
+      <mat-option value='house'>House</mat-option>
+      <mat-option value='car'>Car</mat-option>
+      <mat-option value='entertainment'>Entertainment</mat-option>
+    </mat-select>
+  </mat-form-field>
+  <br>
+  <mat-form-field appearance='fill' color='primary'>
+    <mat-label>Title</mat-label>
+    <input matInput>
+  </mat-form-field>
+  <br>
+  <!-- <mat-form-field>
+    <mat-label>When?</mat-label>
+    <input matInput [matDatepicker]='picker'>
+    <mat-datepicker-toggle matSuffix [for]='picker'></mat-datepicker-toggle>
+    <mat-datepicker #picker></mat-datepicker>
+  </mat-form-field> -->
+
 </form>

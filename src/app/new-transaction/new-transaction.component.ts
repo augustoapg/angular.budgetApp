@@ -7,14 +7,12 @@ import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
   styleUrls: ['./new-transaction.component.css']
 })
 export class NewTransactionComponent implements OnInit {
-  options: FormGroup;
-  whoControl = new FormControl('augusto');
+  newTransactionForm = new FormGroup({
+    type: new FormControl(''),
+    who: new FormControl(''),
+  });
 
-  constructor(fb: FormBuilder) {
-    this.options = fb.group({
-      who: this.whoControl,
-    });
-  }
+  constructor() { }
 
   ngOnInit(): void {
   }

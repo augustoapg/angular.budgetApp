@@ -15,8 +15,7 @@ import { AngularMaterialModule } from './angular-material/angular-material.modul
 @NgModule({
   declarations: [
     AppComponent,
-    NewTransactionComponent,
-    ReactiveFormsModule
+    NewTransactionComponent
   ],
   imports: [
     AngularMaterialModule,
@@ -25,7 +24,8 @@ import { AngularMaterialModule } from './angular-material/angular-material.modul
     FormsModule,
     BrowserAnimationsModule,
     MatRadioModule,
-    MatSliderModule
+    MatSliderModule,
+    ReactiveFormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]
