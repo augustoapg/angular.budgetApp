@@ -1,9 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators, FormGroupDirective } from '@angular/forms';
+import { TransactionService } from './transaction.service';
+import { Transaction } from './Transaction';
 
 @Component({
   selector: 'app-new-transaction',
   templateUrl: './new-transaction.component.html',
+  providers: [TransactionService],
   styleUrls: ['./new-transaction.component.css']
 })
 export class NewTransactionComponent implements OnInit {
@@ -14,7 +17,7 @@ export class NewTransactionComponent implements OnInit {
   category: FormControl =  new FormControl('', Validators.required);
   title: FormControl =  new FormControl('', Validators.required);
   date: FormControl =  new FormControl('', Validators.required);
-  value: FormControl =  new FormControl('');
+  value: FormControl =  new FormControl('', Validators.min(0.01));
   notes: FormControl =  new FormControl('');
 
   types: string[] = ['Expense', 'Income', 'Savings'];
@@ -22,7 +25,7 @@ export class NewTransactionComponent implements OnInit {
   people: string[] = ['Augusto', 'Camila', 'Both'];
   categories: string[] = ['Home', 'Car', 'Entertainment', 'Utility'];
 
-  constructor(private formBuilder: FormBuilder) {
+  constructor(private transactionService : TransactionService) {
     this.newTransactionForm = new FormGroup({
       type: this.type,
       who: this.who,
@@ -37,29 +40,38 @@ export class NewTransactionComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  onSubmit(transactionData) {
-    this.newTransactionForm.reset();
-
-    // TODO: Reset validation warnings after reset!
-    this.chosenType = 'Expense'; // TODO: FIX THIS!
-
-    console.log('Transaction submitted!', transactionData)
+  onSubmit(transactionData, formDirective: FormGroupDirective) {
+    console.log(this.newTransactionForm.hasError())
+    if (!this.newTransactionForm.invalid) {
+      formDirective.resetForm();
+      this.newTransactionForm.reset({type: 'Expense'});
+      this.addNewTransaction(transactionData);
+      console.log('Transaction submitted!', transactionData);
+    }
   }
 
   getErrorMessage(field) {
-    if (field === 'type'){
+    if (field === 'type') {
       return 'Please select a type.';
     } else if (field === 'who') {
       return 'Please select a person.';
     } else if (field === 'category') {
       return 'Please select a category';
     } else if (field === 'title') {
-      return 'Please select a title';
+      return 'Please enter a title';
     } else if (field === 'date') {
-      return 'Please select a date';
+      return 'Please enter a date';
     } else if (field === 'value') {
-      return 'Please select a value';
+      return 'Please enter a valid value';
     }
     return 'Other error'
+  }
+
+  addNewTransaction(transaction): void {
+    this.transactionService.postNewTransaction(transaction).subscribe({
+      next: message => console.log(message),
+      error: error => console.log('There was an error!', error)
+    });
+    console.log('addNewTransaction')
   }
 }

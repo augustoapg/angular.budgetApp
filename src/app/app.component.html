@@ -1,6 +1,18 @@
 <!-- Toolbar -->
 <h1>Budget App</h1>
 
-<app-new-transaction></app-new-transaction>
+<mat-button-toggle (click)='sidenav.toggle()'>Menu</mat-button-toggle>
+<br>
+<mat-sidenav-container class='sidenav'>
+  <mat-sidenav #sidenav mode='push'>
+    <a routerLink='/new-transaction' routerLinkActive='active' (click)='sidenav.toggle()'>New Transaction</a><br>
+    <a routerLink='/new-budget' routerLinkActive='active' (click)='sidenav.toggle()'>New Budget</a><br>
+    <a routerLink='/summary' routerLinkActive='active' (click)='sidenav.toggle()'>Summary</a>
+  </mat-sidenav>
+  <mat-sidenav-content>
+    <router-outlet></router-outlet>
+  </mat-sidenav-content>
+
+</mat-sidenav-container>
 
 

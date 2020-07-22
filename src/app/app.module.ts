@@ -1,5 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
+import { HttpClientModule } from '@angular/common/http';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -10,12 +11,16 @@ import { MatRadioModule } from '@angular/material/radio'
 import { MatSliderModule } from '@angular/material/slider';
 
 import { AngularMaterialModule } from './angular-material/angular-material.module';
+import { NewBudgetComponent } from './new-budget/new-budget.component';
+import { SummaryComponent } from './summary/summary.component';
 
 
 @NgModule({
   declarations: [
     AppComponent,
-    NewTransactionComponent
+    NewTransactionComponent,
+    NewBudgetComponent,
+    SummaryComponent
   ],
   imports: [
     AngularMaterialModule,
@@ -25,7 +30,8 @@ import { AngularMaterialModule } from './angular-material/angular-material.modul
     BrowserAnimationsModule,
     MatRadioModule,
     MatSliderModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    HttpClientModule
   ],
   providers: [],
   bootstrap: [AppComponent]

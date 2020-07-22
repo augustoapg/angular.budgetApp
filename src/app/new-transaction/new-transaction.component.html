@@ -1,6 +1,6 @@
 <h2>New Transaction</h2>
 
-<form [formGroup]='newTransactionForm' (ngSubmit)='onSubmit(newTransactionForm.value)'>
+<form [formGroup]='newTransactionForm' #formDirective="ngForm" (ngSubmit)='onSubmit(newTransactionForm.value, formDirective)'>
   <mat-radio-group aria-label="Select an option" formControlName='type' [(ngModel)]='chosenType'>
     <mat-radio-button *ngFor='let type of types' [value]='type'>{{type}}</mat-radio-button>
   </mat-radio-group>
@@ -40,7 +40,7 @@
   <br>
   <mat-form-field>
     <mat-label>Value</mat-label>
-    <input matInput type='number' formControlName='value' required>
+    <input matInput type='number' formControlName='value' required min='0.01'>
     <mat-error *ngIf='value.invalid'>{{getErrorMessage('value')}}</mat-error>
   </mat-form-field>
   <br>
