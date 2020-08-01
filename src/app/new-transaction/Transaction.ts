@@ -3,7 +3,7 @@ export interface Transaction {
   who: string;
   category: string;
   title: string;
-  date: object;
+  date: Date;
   value: number;
   notes: string;
 }

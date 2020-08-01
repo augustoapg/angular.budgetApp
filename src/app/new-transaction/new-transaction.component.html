@@ -50,4 +50,5 @@
   </mat-form-field>
   <br>
   <button mat-raised-button color='primary' type='submit'>Submit</button>
+  <p id='message' [ngClass]="{green: messageType === 'success', red: messageType === 'error'}">{{message}}</p>
 </form>

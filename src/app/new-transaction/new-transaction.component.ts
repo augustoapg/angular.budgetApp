@@ -20,6 +20,9 @@ export class NewTransactionComponent implements OnInit {
   value: FormControl =  new FormControl('', Validators.min(0.01));
   notes: FormControl =  new FormControl('');
 
+  message: String = "";
+  messageType: String = "success";
+
   types: string[] = ['Expense', 'Income', 'Savings'];
   chosenType: string = this.types[0]; // default selected
   people: string[] = ['Augusto', 'Camila', 'Both'];
@@ -41,12 +44,8 @@ export class NewTransactionComponent implements OnInit {
   }
 
   onSubmit(transactionData, formDirective: FormGroupDirective) {
-    console.log(this.newTransactionForm.hasError())
     if (!this.newTransactionForm.invalid) {
-      formDirective.resetForm();
-      this.newTransactionForm.reset({type: 'Expense'});
-      this.addNewTransaction(transactionData);
-      console.log('Transaction submitted!', transactionData);
+      this.addNewTransaction(transactionData, formDirective);
     }
   }
 
@@ -67,11 +66,24 @@ export class NewTransactionComponent implements OnInit {
     return 'Other error'
   }
 
-  addNewTransaction(transaction): void {
+  addNewTransaction(transaction, formDirective): void {
+    // transaction.date = Date.parse
     this.transactionService.postNewTransaction(transaction).subscribe({
-      next: message => console.log(message),
-      error: error => console.log('There was an error!', error)
+      next: res => {
+        this.writeMessage(res.message, 'success');
+        formDirective.resetForm();
+        this.newTransactionForm.reset({type: 'Expense'});
+      },
+      error: error => {
+        console.log(error)
+        this.writeMessage(error.error.message, 'error')
+      }
     });
     console.log('addNewTransaction')
+  }
+
+  writeMessage(msg, type) {
+    this.message = msg;
+    this.messageType = type;
   }
 }

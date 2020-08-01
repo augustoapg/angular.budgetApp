@@ -4,6 +4,7 @@ import { Observable, throwError } from 'rxjs';
 import { catchError, retry } from 'rxjs/operators';
 
 import { Transaction } from 'src/app/new-transaction/Transaction';
+import { APIRes } from './APIRes';
 
 @Injectable({
   providedIn: 'root'
@@ -14,10 +15,10 @@ export class TransactionService {
 
   constructor(private http : HttpClient) { }
 
-  postNewTransaction (transaction: Transaction): Observable<string> {
+  postNewTransaction (transaction: Transaction): Observable<APIRes> {
     console.log('postNewTransaction');
     console.log(transaction);
-    return this.http.post<string>(this.newTransactionUrl, transaction);
+    return this.http.post<APIRes>(this.newTransactionUrl, transaction);
   }
 
   private handleError(error: HttpErrorResponse) {
