@@ -3,15 +3,19 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError, retry } from 'rxjs/operators';
 
-import { Transaction } from 'src/app/new-transaction/Transaction';
+import { Transaction } from 'src/app/models/Transaction';
 import { APIRes } from './APIRes';
+import { Category } from '../models/Category';
+import { Subcategory } from '../models/Subcategory';
 
 @Injectable({
   providedIn: 'root'
 })
 export class TransactionService {
-  transactionUrl : string = 'http://localhost:4242';
-  newTransactionUrl : string = this.transactionUrl + '/newTransaction';
+  baseUrl : string = 'http://localhost:4242';
+  newTransactionUrl : string = this.baseUrl + '/newTransaction';
+  categoriesUrl : string = this.baseUrl + '/category'
+  subcategoryUrl : string = this.baseUrl + '/subcategory'
 
   constructor(private http : HttpClient) { }
 
@@ -19,6 +23,17 @@ export class TransactionService {
     console.log('postNewTransaction');
     console.log(transaction);
     return this.http.post<APIRes>(this.newTransactionUrl, transaction);
+  }
+
+  getCategories(): Observable<Category[]> {
+    let response = this.http.get<Category[]>(this.categoriesUrl);
+    return response;
+  }
+
+  getSubcategories(category : string): Observable<Subcategory[]> {
+    const reqUrl = this.subcategoryUrl + `/getBy?category=${category}`;
+    let response = this.http.get<Subcategory[]>(reqUrl);
+    return response;
   }
 
   private handleError(error: HttpErrorResponse) {

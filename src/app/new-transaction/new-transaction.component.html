@@ -14,14 +14,24 @@
     <mat-error *ngIf='who.invalid'>{{getErrorMessage('who')}}</mat-error>
   </mat-form-field>
   <br>
-  <mat-form-field appearance='standard' color='primary'>
+  <mat-form-field appearance='outline' color='primary' class='categories'>
     <mat-label>Category</mat-label>
 
-    <!-- TODO: Get list of categories from file/DB, and allow new ones -->
-    <mat-select formControlName='category' required>
-      <mat-option *ngFor='let category of categories' [value]='category'>{{category}}</mat-option>
-    </mat-select>
+    <!-- TODO: allow creation of new categories from here -->
+    <mat-chip-list aria-label='Category'>
+      <mat-chip *ngFor='let cat of categories' [value]='cat.name'>{{cat.name}}</mat-chip>
+    </mat-chip-list>
     <mat-error *ngIf='category.invalid'>{{getErrorMessage('category')}}</mat-error>
+  </mat-form-field>
+  <br>
+  <mat-form-field appearance='outline' color='primary' class='subcategories' *ngIf='subcategories !== undefined && subcategories.length != 0'>
+    <mat-label>Subcategory</mat-label>
+
+    <!-- TODO: allow creation of new categories from here -->
+    <mat-chip-list aria-label='Subcategories'>
+      <mat-chip *ngFor='let subcat of subcategories' [value]='subcat'>{{subcat}}</mat-chip>
+    </mat-chip-list>
+    <mat-error *ngIf='subcategory.invalid'>{{getErrorMessage('subcategory')}}</mat-error>
   </mat-form-field>
   <br>
   <mat-form-field appearance='standard' color='primary'>
