@@ -19,7 +19,7 @@
 
     <!-- TODO: allow creation of new categories from here -->
     <mat-chip-list aria-label='Category'>
-      <mat-chip *ngFor='let cat of categories' [value]='cat.name'>{{cat.name}}</mat-chip>
+      <mat-chip *ngFor='let cat of categories' [value]='cat.name' [selected]='categorySelected === cat.name' (click)='categoryClick($event, cat)'>{{cat.name}}</mat-chip>
     </mat-chip-list>
     <mat-error *ngIf='category.invalid'>{{getErrorMessage('category')}}</mat-error>
   </mat-form-field>
@@ -29,7 +29,7 @@
 
     <!-- TODO: allow creation of new categories from here -->
     <mat-chip-list aria-label='Subcategories'>
-      <mat-chip *ngFor='let subcat of subcategories' [value]='subcat'>{{subcat}}</mat-chip>
+      <mat-chip *ngFor='let subcat of subcategories' [value]='subcat' [selected]='subcategorySelected === subcat.name' (click)='subcategoryClick($event, subcat)'>{{subcat.name}}</mat-chip>
     </mat-chip-list>
     <mat-error *ngIf='subcategory.invalid'>{{getErrorMessage('subcategory')}}</mat-error>
   </mat-form-field>

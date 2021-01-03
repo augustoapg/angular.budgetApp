@@ -24,15 +24,16 @@ export class NewTransactionComponent implements OnInit {
   value: FormControl =  new FormControl('', Validators.min(0.01));
   notes: FormControl =  new FormControl('');
 
-  message: String = "";
-  messageType: String = "success";
+  message: String = '';
+  messageType: String = 'success';
 
   types: string[] = ['Expense', 'Income', 'Savings'];
   chosenType: string = this.types[0]; // default selected
   people: string[] = ['Augusto', 'Camila', 'Both'];
   categories: Category[] = [];
   subcategories: Subcategory[] = [];
-  categorySelected: string = "";
+  categorySelected: string = '';
+  subcategorySelected: string = '';
 
   constructor(private transactionService : TransactionService) {
     this.newTransactionForm = new FormGroup({
@@ -103,5 +104,27 @@ export class NewTransactionComponent implements OnInit {
     this.messageType = type;
   }
 
+  categoryClick(event : any, cat : Category) {
+    this.categorySelected = cat.name;
+    this.updateSubcategories().then(() => {
+      console.log(this.subcategories)
+    })
+  }
 
+  updateSubcategories() : Promise<void> {
+    this.subcategories = [];
+    const updateSubcatPromise = new Promise<void>((resolve, reject) => {
+      this.transactionService.getSubcategories(this.categorySelected).subscribe(data => {
+        data.forEach(element => {
+          this.subcategories.push(element);
+        });
+        resolve();
+      });
+    });
+    return updateSubcatPromise;
+  }
+
+  subcategoryClick(event : any, subcat : Subcategory) {
+    this.subcategorySelected = subcat.name;
+  }
 }
