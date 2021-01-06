@@ -1,34 +1,21 @@
 <h2>New Transaction</h2>
 
 <form [formGroup]='newTransactionForm' #formDirective="ngForm" (ngSubmit)='onSubmit(newTransactionForm.value, formDirective)'>
-  <mat-radio-group aria-label="Select an option" formControlName='type' [(ngModel)]='chosenType'>
-    <mat-radio-button *ngFor='let type of types' [value]='type'>{{type}}</mat-radio-button>
-  </mat-radio-group>
-  <mat-error *ngIf='type.invalid'>{{getErrorMessage('type')}}</mat-error>
-  <br>
-  <mat-form-field appearance="standard" color="primary">
-    <mat-label>Who</mat-label>
-    <mat-select formControlName='who' required>
-      <mat-option *ngFor='let person of people' [value]='person'>{{person}}</mat-option>
-    </mat-select>
-    <mat-error *ngIf='who.invalid'>{{getErrorMessage('who')}}</mat-error>
-  </mat-form-field>
-  <br>
   <mat-form-field appearance='outline' color='primary' class='categories'>
     <mat-label>Category</mat-label>
 
     <!-- TODO: allow creation of new categories from here -->
-    <mat-chip-list aria-label='Category'>
+    <mat-chip-list formControlName='category' aria-label='Category' required>
       <mat-chip *ngFor='let cat of categories' [value]='cat.name' [selected]='categorySelected === cat.name' (click)='categoryClick($event, cat)'>{{cat.name}}</mat-chip>
     </mat-chip-list>
     <mat-error *ngIf='category.invalid'>{{getErrorMessage('category')}}</mat-error>
   </mat-form-field>
   <br>
-  <mat-form-field appearance='outline' color='primary' class='subcategories' *ngIf='subcategories !== undefined && subcategories.length != 0'>
-    <mat-label>Subcategory</mat-label>
+  <mat-form-field appearance='outline' color='primary' class='subcategories' required>
+    <mat-label>{{subcategoryLabelMessage}}</mat-label>
 
     <!-- TODO: allow creation of new categories from here -->
-    <mat-chip-list aria-label='Subcategories'>
+    <mat-chip-list aria-label='Subcategories' required>
       <mat-chip *ngFor='let subcat of subcategories' [value]='subcat' [selected]='subcategorySelected === subcat.name' (click)='subcategoryClick($event, subcat)'>{{subcat.name}}</mat-chip>
     </mat-chip-list>
     <mat-error *ngIf='subcategory.invalid'>{{getErrorMessage('subcategory')}}</mat-error>

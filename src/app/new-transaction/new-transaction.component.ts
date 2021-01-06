@@ -15,8 +15,6 @@ import { Subcategory } from '../models/Subcategory';
 export class NewTransactionComponent implements OnInit {
   newTransactionForm;
 
-  type: FormControl =  new FormControl('', Validators.required);
-  who: FormControl =  new FormControl('', Validators.required);
   category: FormControl =  new FormControl('', Validators.required);
   subcategory: FormControl =  new FormControl('', Validators.required);
   title: FormControl =  new FormControl('', Validators.required);
@@ -26,6 +24,7 @@ export class NewTransactionComponent implements OnInit {
 
   message: String = '';
   messageType: String = 'success';
+  subcategoryLabelMessage: String = 'Subcategory (Please select a Category)'
 
   types: string[] = ['Expense', 'Income', 'Savings'];
   chosenType: string = this.types[0]; // default selected
@@ -37,8 +36,6 @@ export class NewTransactionComponent implements OnInit {
 
   constructor(private transactionService : TransactionService) {
     this.newTransactionForm = new FormGroup({
-      type: this.type,
-      who: this.who,
       category: this.category,
       title: this.title,
       date: this.date,
@@ -67,12 +64,10 @@ export class NewTransactionComponent implements OnInit {
   }
 
   getErrorMessage(field) {
-    if (field === 'type') {
-      return 'Please select a type.';
-    } else if (field === 'who') {
-      return 'Please select a person.';
-    } else if (field === 'category') {
+    if (field === 'category') {
       return 'Please select a category';
+    } else if (field === 'subcategory') {
+      return 'Please select a subcategory';
     } else if (field === 'title') {
       return 'Please enter a title';
     } else if (field === 'date') {
@@ -84,6 +79,7 @@ export class NewTransactionComponent implements OnInit {
   }
 
   addNewTransaction(transaction, formDirective): void {
+    console.log('here');
     // transaction.date = Date.parse
     this.transactionService.postNewTransaction(transaction).subscribe({
       next: res => {
@@ -106,9 +102,15 @@ export class NewTransactionComponent implements OnInit {
 
   categoryClick(event : any, cat : Category) {
     this.categorySelected = cat.name;
+    this.subcategorySelected = '';
     this.updateSubcategories().then(() => {
-      console.log(this.subcategories)
-    })
+      console.log(this.subcategories);
+      if (this.subcategories.length === 0) {
+        this.subcategoryLabelMessage = 'This category has no subcategories. Please add one.';
+      } else {
+        this.subcategoryLabelMessage = 'Subcategory';
+      }
+    });
   }
 
   updateSubcategories() : Promise<void> {
